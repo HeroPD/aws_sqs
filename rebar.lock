@@ -1,0 +1,10 @@
+{"1.1.0",
+[{<<"fast_xml">>,
+  {git,"git://github.com/processone/fast_xml.git",
+       {ref,"75343db901413a553422f94835a5b3e47c4d7f0d"}},
+  0},
+ {<<"p1_utils">>,{pkg,<<"p1_utils">>,<<"1.0.12">>},1}]}.
+[
+{pkg_hash,[
+ {<<"p1_utils">>, <<"4304223A2B78D8031E980AE18D6B6D83F764CF2A91C779B2DF7CBDFDE73ACBF8">>}]}
+].
