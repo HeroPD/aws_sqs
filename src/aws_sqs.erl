@@ -149,8 +149,8 @@ getSignatureKey(Key, DateStamp, RegionName, ServiceName) ->
     sign(KService, "aws4_request").
 
 sign_request(Method, Service, Host, Region, Path, RequestParameters) ->
-    AccessKey = os:getenv('AWS_SQS_ACCESS_KEY_ID'),
-    SecretKey = os:getenv('AWS_SQS_SECRET_ACCESS_KEY'),
+    AccessKey = os:getenv("AWS_SQS_ACCESS_KEY_ID"),
+    SecretKey = os:getenv("AWS_SQS_SECRET_ACCESS_KEY"),
 
     AmzDate = utcString(),
     DateStamp = dateString(),
