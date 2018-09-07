@@ -1,7 +1,8 @@
 {application, aws_sqs,
- [{description, "An OTP library"},
+ [{description, "An OTP application"},
   {vsn, "0.1.0"},
   {registered, []},
+  {mod, { aws_sqs_app, []}},
   {applications,
    [kernel,
     stdlib
