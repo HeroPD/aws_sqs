@@ -15,9 +15,13 @@ send_message(#sqs_send_message{host = Host, region = Region, queue_url = QueueUr
                   {QueueUrl ++ "?" ++ RequestParameters, sign_request("GET", "sqs", Host, Region, Path, RequestParameters)},
                   [{timeout, 60000}, {connect_timeout, 30000}],
                   []),
-    {ok, {{Version, Code, ReasonPhrase}, Headers, ResponseBody}} = Response,
-    XmlBody = fxml_stream:parse_element(erlang:list_to_binary(ResponseBody)),
-    {ok, {{Version, Code, ReasonPhrase}, Headers, XmlBody}}.
+    case Response of
+        {ok, {{Version, Code, ReasonPhrase}, Headers, ResponseBody}} ->
+            XmlBody = fxml_stream:parse_element(erlang:list_to_binary(ResponseBody)),
+            {ok, {{Version, Code, ReasonPhrase}, Headers, XmlBody}};
+        _ ->
+            Response
+    end.
 
 receive_message(#sqs_receive_message{host = Host, region = Region, queue_url = QueueUrl, path = Path, attribute_names = AttributeNames, max_number_of_messages = MaxNumberOfMessages, message_attribute_name = MessageAttributeName, visibility_timeout = VisibilityTimeout, wait_time_second = WaitTimeSecond} = _) ->
     RequestParameters = "Action=ReceiveMessage&AttributeName=" ++ http_uri:encode(flatten(AttributeNames)) ++ "&MaxNumberOfMessages=" ++ integer_to_list(MaxNumberOfMessages) ++ "&MessageAttributeName=" ++ http_uri:encode(flatten(MessageAttributeName))  ++ "&Version=2012-11-05" ++ "&VisibilityTimeout=" ++ integer_to_list(VisibilityTimeout) ++ "&WaitTimeSeconds=" ++ integer_to_list(WaitTimeSecond),
@@ -25,9 +29,13 @@ receive_message(#sqs_receive_message{host = Host, region = Region, queue_url = Q
                   {QueueUrl ++ "?" ++ RequestParameters, sign_request("GET", "sqs", Host, Region, Path, RequestParameters)},
                   [{timeout, 60000}, {connect_timeout, 30000}],
                   []),
-    {ok, {{Version, Code, ReasonPhrase}, Headers, ResponseBody}} = Response,
-    XmlBody = fxml_stream:parse_element(erlang:list_to_binary(ResponseBody)),
-    {ok, {{Version, Code, ReasonPhrase}, Headers, XmlBody}}.
+    case Response of
+        {ok, {{Version, Code, ReasonPhrase}, Headers, ResponseBody}} ->
+            XmlBody = fxml_stream:parse_element(erlang:list_to_binary(ResponseBody)),
+            {ok, {{Version, Code, ReasonPhrase}, Headers, XmlBody}};
+        _ ->
+            Response
+    end.
 
 delete_message(#sqs_delete_message{host = Host, region = Region, queue_url = QueueUrl, path = Path, receipt_handle = ReceiptHandle} = _) ->
     Body = http_uri:encode(ReceiptHandle),
@@ -36,9 +44,14 @@ delete_message(#sqs_delete_message{host = Host, region = Region, queue_url = Que
                   {QueueUrl ++ "?" ++ RequestParameters, sign_request("GET", "sqs", Host, Region, Path, RequestParameters)},
                   [{timeout, 60000}, {connect_timeout, 30000}],
                   []),
-    {ok, {{Version, Code, ReasonPhrase}, Headers, ResponseBody}} = Response,
-    XmlBody = fxml_stream:parse_element(erlang:list_to_binary(ResponseBody)),
-    {ok, {{Version, Code, ReasonPhrase}, Headers, XmlBody}}.
+    case Response of
+        {ok, {{Version, Code, ReasonPhrase}, Headers, ResponseBody}} ->
+            XmlBody = fxml_stream:parse_element(erlang:list_to_binary(ResponseBody)),
+            {ok, {{Version, Code, ReasonPhrase}, Headers, XmlBody}};
+        _ ->
+            Response
+    end.
+    
 
 delete_message_batch(#sqs_delete_message_batch{ message_batch = []} = _) ->
     {ok, nothing_to_delete};
@@ -49,9 +62,13 @@ delete_message_batch(#sqs_delete_message_batch{host = Host, region = Region, que
                   {QueueUrl ++ "?" ++ RequestParameters, sign_request("GET", "sqs", Host, Region, Path, RequestParameters)},
                   [{timeout, 60000}, {connect_timeout, 30000}],
                   []),
-    {ok, {{Version, Code, ReasonPhrase}, Headers, ResponseBody}} = Response,
-    XmlBody = fxml_stream:parse_element(erlang:list_to_binary(ResponseBody)),
-    {ok, {{Version, Code, ReasonPhrase}, Headers, XmlBody}}.
+    case Response of
+        {ok, {{Version, Code, ReasonPhrase}, Headers, ResponseBody}} ->
+            XmlBody = fxml_stream:parse_element(erlang:list_to_binary(ResponseBody)),
+            {ok, {{Version, Code, ReasonPhrase}, Headers, XmlBody}};
+        _ ->
+            Response
+    end.
 
 extract_sqs_messages_from_xml(#xmlel{name = <<"ReceiveMessageResponse">>, children = [
             #xmlel{ name = <<"ReceiveMessageResult">>, children = Messages},
